@@ -1,6 +1,7 @@
 import csv
 import random
 import time
+import codecs
 from collections import defaultdict
 
 # Definieren der Spielerklasse
@@ -9,20 +10,20 @@ class Spieler:
         self.name = name
         self.full_name = full_name
         self.birth_date = birth_date
-        self.age = age
-        self.height_cm = height_cm
-        self.weight_kgs = weight_kgs
+        self.age = int(age) if age.isdigit() else 0
+        self.height_cm = int(height_cm) if height_cm.isdigit() else 0
+        self.weight_kgs = int(weight_kgs) if weight_kgs.isdigit() else 0
         self.positions = positions.split(',')
         self.nationality = nationality
         self.overall_rating = int(overall_rating) if overall_rating.isdigit() else 0
         self.potential = potential
-        self.value_euro = value_euro
-        self.wage_euro = wage_euro
+        self.value_euro = float(value_euro.replace(',', '.')) if value_euro else 0.0
+        self.wage_euro = float(wage_euro.replace(',', '.')) if wage_euro else 0.0
 
 # Funktion zum Einlesen der Spielerdaten aus einer CSV-Datei
 def read_players(filename):
     players = []
-    with open(filename) as csvfile:
+    with codecs.open(filename, 'r', 'utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             player = Spieler(row['name'], row['full_name'], row['birth_date'], row['age'], row['height_cm'], row['weight_kgs'], row['positions'], row['nationality'], row['overall_rating'], row['potential'], row['value_euro'], row['wage_euro'])
@@ -48,7 +49,7 @@ def simulate_match():
             team2_score += 1
 
         print("Spielstand: %d - %d" % (team1_score, team2_score))
-        time.sleep(1)  # 2 Sekunden Pause
+        time.sleep(1)  # 1 Sekunde Pause
 
     return team1_score, team2_score
 
@@ -60,10 +61,10 @@ def save_result(team1, team2, team1_score, team2_score):
     else:
         winner, loser = team2, team1
 
-    result.append(','.join([player.name for player in winner]))
-    result.append(','.join([player.name for player in loser]))
+    result.append(','.join([player.name.encode("utf32") for player in winner]))
+    result.append(','.join([player.name.encode("utf32") for player in loser]))
 
-    with open('ergebnisse.csv', 'a', encoding='utf-8') as csvfile:
+    with codecs.open('ergebnisse.csv', 'a', 'utf-8') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(result)
 

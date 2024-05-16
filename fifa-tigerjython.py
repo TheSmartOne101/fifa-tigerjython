@@ -41,9 +41,9 @@ def simulate_match():
     team1_score = 0
     team2_score = 0
 
-    for _ in range(3):
-        winner = random.choice([1, 2])  # Zufälliger Gewinner für dieses Spiel
-        if winner == 1:
+    for _ in range(5):  # Änderung auf 5 Durchläufe für maximal 5 Tore pro Team
+        scorer = random.choice([1, 2])  # Zufälliger Torschütze für dieses Spiel
+        if scorer == 1:
             team1_score += 1
         else:
             team2_score += 1
@@ -76,6 +76,14 @@ def main():
     print("Willkommen zum Fußballspiel-Simulator!")
     time.sleep(1)
 
+    print("\nTeam 1:")
+    for player in team1:
+        print("  %s (%s)" % (player.name, ', '.join(player.positions)))
+
+    print("\nTeam 2:")
+    for player in team2:
+        print("  %s (%s)" % (player.name, ', '.join(player.positions)))
+
     # Wetten-Option
     bet = raw_input("Möchten Sie auf ein Team wetten? (j/n) ")
     if bet.lower() == "j":
@@ -89,14 +97,6 @@ def main():
             chosen_team = None
     else:
         chosen_team = None
-
-    print("\nTeam 1:")
-    for player in team1:
-        print("  %s (%s)" % (player.name, ', '.join(player.positions)))
-
-    print("\nTeam 2:")
-    for player in team2:
-        print("  %s (%s)" % (player.name, ', '.join(player.positions)))
 
     print("\nSpielstand: 0 - 0")
     team1_score, team2_score = simulate_match()

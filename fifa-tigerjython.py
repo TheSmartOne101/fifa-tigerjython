@@ -61,8 +61,8 @@ def save_result(team1, team2, team1_score, team2_score):
     else:
         winner, loser = team2, team1
 
-    result.append(','.join([player.name.encode("utf32") for player in winner]))
-    result.append(','.join([player.name.encode("utf32") for player in loser]))
+    result.append(','.join([player.name for player in winner]))
+    result.append(','.join([player.name for player in loser]))
 
     with codecs.open('ergebnisse.csv', 'a', 'utf-8') as csvfile:
         writer = csv.writer(csvfile)

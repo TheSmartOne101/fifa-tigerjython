@@ -2,6 +2,7 @@ import csv
 import random
 import time
 import codecs
+import sqlite3
 from collections import defaultdict
 
 # Definieren der Spielerklasse
@@ -53,7 +54,23 @@ def simulate_match():
 
     return team1_score, team2_score
 
-# Funktion zum Speichern des Spielergebnisses in einer CSV-Datei
+# Funktion zum Initialisieren der Datenbank
+def init_db():
+    conn = sqlite3.connect('ergebnisse.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            winner TEXT,
+            loser TEXT,
+            team1_score INTEGER,
+            team2_score INTEGER
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+# Funktion zum Speichern des Spielergebnisses in der Datenbank
 def save_result(team1, team2, team1_score, team2_score):
     if team1_score > team2_score:
         winner = ','.join([player.name for player in team1])
@@ -62,12 +79,18 @@ def save_result(team1, team2, team1_score, team2_score):
         winner = ','.join([player.name for player in team2])
         loser = ','.join([player.name for player in team1])
 
-    with codecs.open('ergebnisse.csv', 'a', 'utf-8') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow([winner, loser, team1_score, team2_score])
+    conn = sqlite3.connect('ergebnisse.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        INSERT INTO results (winner, loser, team1_score, team2_score)
+        VALUES (?, ?, ?, ?)
+    ''', (winner, loser, team1_score, team2_score))
+    conn.commit()
+    conn.close()
 
 # Hauptfunktion zur Ausführung des Programms
 def main():
+    init_db()
     players = read_players('Fifa_Players_2018_reduziert.csv')
 
     [team1, team2] = distribute_players(players)

@@ -41,15 +41,15 @@ def simulate_match():
     team1_score = 0
     team2_score = 0
 
-    for _ in range(5):  # Änderung auf 5 Durchläufe für maximal 5 Tore pro Team
-        scorer = random.choice([1, 2])  # Zufälliger Torschütze für dieses Spiel
+    for _ in range(9): 
+        scorer = random.choice([1, 2])  
         if scorer == 1:
             team1_score += 1
         else:
             team2_score += 1
 
         print("Spielstand: %d - %d" % (team1_score, team2_score))
-        time.sleep(1)  # 1 Sekunde Pause
+        time.sleep(1)  
 
     return team1_score, team2_score
 

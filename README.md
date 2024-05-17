@@ -4,4 +4,4 @@
 >Sie können auf ein Tiem Wetten, aber werden sie nicht süchtig
 
 >[!TIP]
->Öffnen sie die Datei `ergebnisse.csv` damit sie die Ergebnisse der vorherigen Simulationen sehen können
+>Öffnen sie die Datei `ergebnisse.csv` / `ergebnisse.db` damit sie die Ergebnisse der vorherigen Simulationen sehen können
